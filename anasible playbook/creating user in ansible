@@ -1,0 +1,8 @@
+ name: create a tomcat user
+      ansible.builtin.user:
+        name: tomcat
+        create_home: yes
+        group: tomcat
+        home: /opt/tomcat
+        shell: /bin/false
+        state: present

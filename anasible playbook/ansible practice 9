@@ -1,0 +1,13 @@
+---
+- name: install packages
+  hosts: all
+  tasks:
+    - name: insatll some packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      become: yes
+      loops: "{{ packages }}"
+    - name: write debug
+      ansible.builtin.debug:
+        var: purpose

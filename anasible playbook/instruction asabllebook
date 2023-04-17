@@ -1,0 +1,16 @@
+---
+- name: <purpose>
+  hosts: <where to execute>
+  become: yes # whether to run the tasks with sudo
+  tasks:
+    - name: <task description> # individual step
+      <module-name>:
+         <param-1>: <value-1>
+         ..
+         <param-n>: <value-n>
+    - name: <task description>
+      <module-name>:
+         <param-1>: <value-1>
+         ..
+         <param-n>: <value-n>
+         state: <desired-state>

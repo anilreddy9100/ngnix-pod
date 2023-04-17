@@ -1,0 +1,4 @@
+ name: create a tomcat group
+      ansible.builtin.group:
+        name: tomcat
+        state: present

@@ -1,0 +1,20 @@
+---
+apiversion: v1
+kind: pod
+metadata:
+  name: apline-exp
+  label:
+   app: alpine
+   ver: "1.2"
+spec:
+  containers:
+    name: alpine-exp
+    image: alpine:8
+    command:
+      - sleep
+    arg:
+      - 1d
+    env:
+      name: test
+      value: hello
+          

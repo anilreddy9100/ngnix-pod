@@ -1,0 +1,99 @@
+---
+- name: install tomcat on node
+  hosts: all
+  become: yes
+  vars:
+    java_package_name: openjdk-11-jdk
+    user_name: tomcat
+    group_name: tomcat
+    tomcat_version: "10.0.27"
+    tomcat_major_version: "10"
+    user_shell: /bin/false
+    user_home: /opt/tomcat
+    tomcat_service_name: tomcat.service
+  tasks:
+    - name: java-tomcat
+      ansible.builtin.package:
+        name: "{{java_package_name}}"
+        update_cache: yes
+        state: present
+    - name: adding group
+      ansible.builtin.group:
+        name: "{{group_name}}"
+        state: present
+    - name: adding user
+      ansible.builtin.user:
+        name: "{{user_name}}"
+        create_home: yes
+        group: "{{group_name}}"
+        home: "{{user_home}}"
+        shell: "{{user_shell}}"
+        state: present
+     - name: get tomcat stats
+      ansible.builtin.stat:
+        path: "{{ user_home }}/latest/bin/startup.sh"
+      register: tomcat_startup   
+    - name: exract tomcat tar
+      ansible.builtin.unarchive:
+        src: "https://www-eu.apache.org/dist/tomcat/tomcat-{{tomcat_major_version}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz"
+        remote_src: yes
+        dest: "{{user_home}}"
+     when: not tomcat_startup.stat.exists   
+    - name: create symbolic link
+      ansible.builtin.file:
+        src: "{{user_home}}/apache-tomcat-{{tomcat_version}}"
+        dest: "{{user_home}}/latest"
+        state: link
+    - name: change permissions
+      ansible.builtin.file:
+        dest: "{{user_home}}"
+        recurse: true
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+        state: directory
+    - name: running command
+      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'"
+      when: not tomcat_startup.stat.exists
+    - name: copying tomcat service
+      ansible.builtin.copy:
+        src: tomcat.service
+        dest: "/etc/systemd/system/{{tomcat_service_name}}"
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+      when: ansible_facts['distribution'] == "Ubuntu"  
+    - name: system reload
+      ansible.builtin.systemd:
+        name: "{{tomcat_service_name}}"
+        daemon_reload: true
+        enabled: yes
+        state: started
+    - name: copy the users xml
+      ansible.builtin.copy:
+        src: user.xml
+        dest: "{{user_home}}/latest/conf/tomcat-users.xml"
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+    - name: copy the manager app context file
+      ansible.builtin.copy:
+        src: context.xml
+        dest: "{{user_home}}/latest/webapps/manager/META-INF/context.xml"
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+    - name: copy the host manager app context file
+      ansible.builtin.copy:
+        src: context.xml
+        dest: "{{ user_home }}/latest/webapps/host-manager/META-INF/context.xml"
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+    - name: restart tomcat
+      ansible.builtin.systemd:
+        name: "{{tomcat_service_name}}"
+        state: started
+
+      
+                  
+        
+    
+
+
+
