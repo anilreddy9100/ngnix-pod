@@ -1,0 +1,17 @@
+git init
+git remote add origin <url of git repository>
+git add . (addes all modified files in present directory)
+git add -A ( addes all modiified in local repository)
+git commit -m (commit file all tracked files)
+git commit -am (addes file and commit in one step)
+git restore < filenane> (it restore tracked files)
+git branch -m <branch name> (it changes th branch name)
+git branch <branchname> (it craetes new branch)
+git cheackout <branch name> (it shift into other branch)
+git push origin <branch name> (it pusheslocal repo remote repo)
+git pull (it pull the code file from local repo)
+git clone <git url> (to get remote repo file to local repo)
+git merge <branch name> <mearging name> to merge file branch  to other branch
+git rebase (it merge the files delete fault commit crear onre commit)
+git cherrypick (to copy the specific commit to other branch it rearly uses)
+to know more commands <git --help> 
