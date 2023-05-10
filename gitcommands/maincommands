@@ -14,4 +14,20 @@ git clone <git url> (to get remote repo file to local repo)
 git merge <branch name> <mearging name> to merge file branch  to other branch
 git rebase (it merge the files delete fault commit crear onre commit)
 git cherrypick (to copy the specific commit to other branch it rearly uses)
-to know more commands <git --help> 
+to know more commands <git --help>
+git status 
+git logs
+git log --oneline
+git config 
+git logs --graph --oneline
+git submodule init
+git submodule add <git url> to add one or more repo in one place
+git cat-file -t <commit number or tag> it shows type
+git cat-file -p < connit number  or tag > it print out adout the file
+git commit --amend -m (to change the commit  message )
+git reflog (This displays the reflog for the local repository.)
+git reset --hard <commit id> (Using Git reset, it is now possible to change main back to the commit it was before. This provides a safety net in case the history was accidentally changed.)
+git rebase -i (gives much more fine grained control over history modifications than a standard git rebase)
+git rebase -- p (leaves the commit as is. It will not modify the commit's message or content and will still be an individual commit in the branches history)
+git rebase -i HEAD~1 (to rebase in intractive way to last commit)
+git rebase -i --root (it used to change the commit msgs in git)
